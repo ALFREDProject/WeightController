@@ -96,13 +96,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateText(String text) {
 
-        JSONObject queryObj = new JSONObject();
-        try {
-            queryObj.put("key", "HelloAlfredName");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         JSONObject obj = new JSONObject();
         try {
             obj.put("name", text);
