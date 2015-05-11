@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +95,10 @@ public class MainActivity extends ActionBarActivity {
         saveText(nameText.getText().toString());
     }
 
+    public void onBtnReadClick(View view){
+        readText();
+    }
+
     private void saveText(String text) {
 
         JSONObject obj = new JSONObject();
@@ -104,17 +109,90 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+        JSONObject queryObject = new JSONObject();
+        try {
+            queryObject.put("key", "HelloAlfredName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            cloudStorage.deleteJsonObject("HelloAlfredStructuredBucket", queryObject, new BucketResponse() {
+                @Override
+                public void OnError(Exception e) {
+                    setText(e.toString());
+                }
+
+                @Override
+                public void OnSuccess(JSONObject jsonObject) {
+
+                }
+
+                @Override
+                public void OnSuccess(JSONArray jsonArray) {
+
+                }
+            });
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+
         cloudStorage.saveJsonObject("HelloAlfredStructuredBucket", obj, new BucketResponse() {
             @Override
             public void OnError(Exception e) {
-
+                setText(e.toString());
             }
 
             @Override
             public void OnSuccess(JSONObject jsonObject) {
 
             }
+
+            @Override
+            public void OnSuccess(JSONArray jsonArray) {
+
+            }
         });
+    }
+
+    private void readText(){
+        JSONObject queryObject = new JSONObject();
+        try {
+            queryObject.put("key", "HelloAlfredName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        cloudStorage.readJsonArray("HelloAlfredStructuredBucket", queryObject, new BucketResponse() {
+            @Override
+            public void OnError(Exception e) {
+                setText(e.toString());
+            }
+
+            @Override
+            public void OnSuccess(JSONObject jsonObject) {
+                if (jsonObject != null) {
+                    try {
+                        setText(jsonObject.getString("response"));
+                    } catch (JSONException e) {
+                        setText(e.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void OnSuccess(JSONArray jsonArray) {
+                setText(jsonArray.toString());
+            }
+        });
+    }
+
+    private void setText(String text){
+
+        TextView nameText = (TextView) this.findViewById(R.id.resultLabel);
+        nameText.setText(text);
     }
 
     //region NotificationHelper
