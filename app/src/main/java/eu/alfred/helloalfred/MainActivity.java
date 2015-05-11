@@ -91,10 +91,10 @@ public class MainActivity extends ActionBarActivity {
 
     public void onBtnSaveClick(View view) {
         EditText nameText = (EditText)this.findViewById(R.id.nameText);
-        updateText(nameText.getText().toString());
+        saveText(nameText.getText().toString());
     }
 
-    private void updateText(String text) {
+    private void saveText(String text) {
 
         JSONObject obj = new JSONObject();
         try {
