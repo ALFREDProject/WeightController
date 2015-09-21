@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
 
     private PersonalAssistant personalAssistant;
     private CloudStorage cloudStorage;
+    private SAFFacade safFacade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
