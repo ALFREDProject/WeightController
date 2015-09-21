@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import eu.alfred.api.PersonalAssistant;
 import eu.alfred.api.PersonalAssistantConnection;
+import eu.alfred.api.sensors.SAFFacade;
 import eu.alfred.api.storage.CloudStorage;
 import eu.alfred.api.storage.responses.BucketResponse;
 
@@ -57,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
             public void OnConnected() {
                 // Do some stuff
                 cloudStorage = new CloudStorage(personalAssistant.getMessenger());
-
+                safFacade = new 
                 sendNotification("Connected to AlfredService");
             }
 
