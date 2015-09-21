@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity {
             public void OnConnected() {
                 // Do some stuff
                 cloudStorage = new CloudStorage(personalAssistant.getMessenger());
+
                 sendNotification("Connected to AlfredService");
             }
 
