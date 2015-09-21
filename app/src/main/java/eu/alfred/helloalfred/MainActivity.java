@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         cloudStorage = null;
+        safFacade = null;
         personalAssistant = new PersonalAssistant(this);
 
         personalAssistant.setOnPersonalAssistantConnectionListener(new PersonalAssistantConnection() {
@@ -58,7 +59,8 @@ public class MainActivity extends ActionBarActivity {
             public void OnConnected() {
                 // Do some stuff
                 cloudStorage = new CloudStorage(personalAssistant.getMessenger());
-                safFacade = new 
+                safFacade = new SAFFacade(personalAssistant.getMessenger());
+
                 sendNotification("Connected to AlfredService");
             }
 
