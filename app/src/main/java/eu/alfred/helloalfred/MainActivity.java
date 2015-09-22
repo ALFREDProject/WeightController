@@ -31,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import eu.alfred.api.PersonalAssistant;
 import eu.alfred.api.PersonalAssistantConnection;
 import eu.alfred.api.sensors.SAFFacade;
@@ -114,16 +116,14 @@ public class MainActivity extends ActionBarActivity {
             }
 
             @Override
-            public void OnSuccess(JSONObject jsonObject) {
+            public void OnSuccess(Byte[] jsonObject) {
                 if (jsonObject != null) {
-                    try {
-                        setText(jsonObject.getString("value"));
-                    } catch (JSONException e) {
-                        setText(e.toString());
-                    }
+                    setText(Arrays.toString(jsonObject));
                 }
             }
         });
+
+
         //safFacade.GetLiveData("/shirt/temp";
 
         /*
