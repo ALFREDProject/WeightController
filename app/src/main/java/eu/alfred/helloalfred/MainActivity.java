@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import eu.alfred.api.PersonalAssistant;
 import eu.alfred.api.PersonalAssistantConnection;
 import eu.alfred.api.sensors.SAFFacade;
+import eu.alfred.api.sensors.responses.SensorDataResponse;
 import eu.alfred.api.storage.CloudStorage;
 import eu.alfred.api.storage.responses.BucketResponse;
 
@@ -106,6 +107,27 @@ public class MainActivity extends ActionBarActivity {
 
     private void saveText(String text) {
 
+        safFacade.GetLiveData("/shirt/tmp", new SensorDataResponse() {
+            @Override
+            public void OnError(Exception e) {
+                setText(e.toString());
+            }
+
+            @Override
+            public void OnSuccess(JSONObject jsonObject) {
+                if (jsonObject != null) {
+                    try {
+                        setText(jsonObject.getString("value"));
+                    } catch (JSONException e) {
+                        setText(e.toString());
+                    }
+                }
+            }
+        });
+        //safFacade.GetLiveData("/shirt/temp";
+
+        /*
+
         JSONObject obj = new JSONObject();
         try {
             obj.put("name", text);
@@ -160,6 +182,8 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
+        */
+
     }
 
     private void readText(){
