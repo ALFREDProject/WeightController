@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,6 +38,7 @@ import eu.alfred.api.PersonalAssistant;
 import eu.alfred.api.PersonalAssistantConnection;
 import eu.alfred.api.sensors.SAFFacade;
 import eu.alfred.api.sensors.responses.SensorDataResponse;
+import eu.alfred.api.speech.Cade;
 import eu.alfred.api.storage.CloudStorage;
 import eu.alfred.api.storage.responses.BucketResponse;
 
@@ -46,6 +48,7 @@ public class MainActivity extends ActionBarActivity {
     private PersonalAssistant personalAssistant;
     private CloudStorage cloudStorage;
     private SAFFacade safFacade;
+    private Cade cade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
         cloudStorage = null;
         safFacade = null;
         personalAssistant = new PersonalAssistant(this);
+        cade = null;
 
         personalAssistant.setOnPersonalAssistantConnectionListener(new PersonalAssistantConnection() {
             @Override
@@ -63,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
                 // Do some stuff
                 cloudStorage = new CloudStorage(personalAssistant.getMessenger());
                 safFacade = new SAFFacade(personalAssistant.getMessenger());
-
+                cade = new Cade(personalAssistant.getMessenger());
                 sendNotification("Connected to AlfredService");
             }
 
@@ -109,7 +113,13 @@ public class MainActivity extends ActionBarActivity {
 
     private void saveText(String text) {
 
-        safFacade.GetLiveData("/shirt/tmp", new SensorDataResponse() {
+        //cade.InitiateSpeechRecognition();
+
+        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        setText(String.valueOf(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+
+        //setText("Started");
+        /*safFacade.GetLiveData("/shirt/tmp", new SensorDataResponse() {
             @Override
             public void OnError(Exception e) {
                 setText(e.toString());
@@ -122,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         });
-
+*/
 
         //safFacade.GetLiveData("/shirt/temp";
 
