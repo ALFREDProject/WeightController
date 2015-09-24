@@ -113,10 +113,10 @@ public class MainActivity extends ActionBarActivity {
 
     private void saveText(String text) {
 
-        //cade.InitiateSpeechRecognition();
+        cade.InitiateSpeechRecognition();
 
-        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        setText(String.valueOf(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+       // AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+       // setText(String.valueOf(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
 
         //setText("Started");
         /*safFacade.GetLiveData("/shirt/tmp", new SensorDataResponse() {
