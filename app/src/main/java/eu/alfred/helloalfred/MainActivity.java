@@ -39,6 +39,7 @@ import eu.alfred.api.PersonalAssistantConnection;
 import eu.alfred.api.sensors.SAFFacade;
 import eu.alfred.api.sensors.responses.SensorDataResponse;
 import eu.alfred.api.speech.Cade;
+import eu.alfred.api.speech.responses.CadeResponse;
 import eu.alfred.api.storage.CloudStorage;
 import eu.alfred.api.storage.responses.BucketResponse;
 
@@ -58,17 +59,21 @@ public class MainActivity extends ActionBarActivity {
 
         cloudStorage = null;
         safFacade = null;
-        personalAssistant = new PersonalAssistant(this);
+        //personalAssistant = new PersonalAssistant(this);
         cade = null;
+
+        personalAssistant = new PersonalAssistant(this);
+
+        /*cloudStorage = new CloudStorage(personalAssistant.getMessenger());
+        safFacade = new SAFFacade(personalAssistant.getMessenger());
+        cade = new Cade(personalAssistant.getMessenger());*/
+        sendNotification("Connected to AlfredService");
 
         personalAssistant.setOnPersonalAssistantConnectionListener(new PersonalAssistantConnection() {
             @Override
             public void OnConnected() {
                 // Do some stuff
-                cloudStorage = new CloudStorage(personalAssistant.getMessenger());
-                safFacade = new SAFFacade(personalAssistant.getMessenger());
                 cade = new Cade(personalAssistant.getMessenger());
-                sendNotification("Connected to AlfredService");
             }
 
             @Override
@@ -113,7 +118,27 @@ public class MainActivity extends ActionBarActivity {
 
     private void saveText(String text) {
 
-        cade.InitiateSpeechRecognition();
+        cade.GetCadeBackendUrl(new CadeResponse() {
+            @Override
+            public void OnSuccess(JSONObject jsonObject) {
+                //Not used
+            }
+
+            @Override
+            public void OnSuccess(JSONArray jsonArray) {
+                //Not used
+            }
+
+            @Override
+            public void OnSuccess(String s) {
+                String data = s;
+            }
+
+            @Override
+            public void OnError(Exception e) {
+
+            }
+        });
 
        // AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
        // setText(String.valueOf(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
