@@ -118,7 +118,9 @@ public class MainActivity extends ActionBarActivity {
 
     private void saveText(String text) {
 
-        cade.GetCadeBackendUrl(new CadeResponse() {
+        //cade.InitiateSpeechRecognition();
+
+        /*cade.GetCadeBackendUrl(new CadeResponse() {
             @Override
             public void OnSuccess(JSONObject jsonObject) {
                 //Not used
@@ -138,7 +140,7 @@ public class MainActivity extends ActionBarActivity {
             public void OnError(Exception e) {
 
             }
-        });
+        });*/
 
        // AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
        // setText(String.valueOf(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
