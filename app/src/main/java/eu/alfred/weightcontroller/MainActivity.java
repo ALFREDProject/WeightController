@@ -1,4 +1,4 @@
-package eu.alfred.helloalfred;
+package eu.alfred.weightcontroller;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;

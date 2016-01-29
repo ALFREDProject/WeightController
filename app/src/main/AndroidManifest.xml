@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eu.alfred.helloalfred" >
+    package="eu.alfred.weightcontroller" >
 
     <application
         android:allowBackup="true"

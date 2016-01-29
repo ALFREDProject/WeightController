@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HelloAlfred</string>
+    <string name="app_name">Weight Controller</string>
 
     <string name="hello_world">Hello</string>
     <string name="action_settings">Settings</string>
