@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WeightController.iml" filepath="$PROJECT_DIR$/WeightController.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weightcontroller.iml" filepath="$PROJECT_DIR$/weightcontroller.iml" />
     </modules>
   </component>
 </project>
