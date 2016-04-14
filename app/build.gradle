@@ -30,3 +30,9 @@ repositories{
         dirs 'libs'
     }
 }
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
