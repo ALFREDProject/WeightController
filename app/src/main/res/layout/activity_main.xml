@@ -1,12 +1,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
-
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/plot"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        ap:labelTextColor="#000000"
+        ap:label="Weights"
+        ap:rangeLabel="kg"
+        ap:domainLabel="date"
+        ap:borderColor="#ffffff"
+        ap:backgroundColor="#ffffff"
+        ap:graphBackgroundColor="#ffffff"
+        ap:gridBackgroundColor="#ffffff"
+        ap:gridPaddingLeft="0dp"
+        ap:gridPaddingRight="0dp"
+        ap:gridPaddingTop="0dp"
+        ap:gridPaddingBottom="60dp"
+        ap:labelTextSize="20sp"
+        ap:rangeLabelTextSize="13sp"
+        ap:domainLabelTextSize="13sp"
+        ap:graphMarginTop="10dp"
+        ap:graphMarginBottom="40dp"
+        ap:graphMarginLeft="0dp"
+        ap:graphMarginRight="0dp"
+        ap:graphDomainLineColor="#000000"
+        ap:graphDomainLineThickness="1dp"
+        ap:graphRangeLineColor="#000000"
+        ap:graphRangeLineThickness="1dp"
+        ap:rangeTickLabelTextSize="15sp"
+        ap:rangeOriginTickLabelTextSize="15sp"
+        ap:domainTickLabelTextSize="15sp"
+        ap:domainOriginTickLabelTextSize="15sp"
+        ap:legendTextSize="15sp"
+        ap:legendIconHeight="15dp"
+        ap:legendIconWidth="15dp"
+        ap:legendHeight="25dp"
+        ap:legendAnchorPosition="right_bottom"/>
     <include
         layout="@layout/voice_btn_layout"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:id="@+id/include" />
 
 </RelativeLayout>
