@@ -1,5 +1,6 @@
 package eu.alfred.weightcontroller;
 
+import android.app.Activity;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,29 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
     private GoogleApiClient mClient = null;
     public static final String TAG = "WeightController";
 
+    public void addData(List<Weight> weights) {
+        /*Number[] seriesNumbers = new Number[weights.size()];
+        int i = 0;
+        for (Weight weight : weights) {
+            seriesNumbers[i] = weight.weight;
+            ++i;
+        }*/
+
+        Number[] seriesNumbers = {80, 70, 80, 70, 80, 70};
+
+        XYSeries series = new SimpleXYSeries(Arrays.asList(seriesNumbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Weights");
+
+        LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
+        seriesFormat.setPointLabelFormatter(new PointLabelFormatter());
+        seriesFormat.configure(getApplicationContext(), R.xml.line_point_formatter_with_labels);
+
+        seriesFormat.setInterpolationParams(new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
+
+        plot.addSeries(series, seriesFormat);
+
+        plot.redraw();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +73,7 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
         //**circleButton = (CircleButton)findViewById(R.id.voiceControlBtn);
         //**circleButton.setOnTouchListener(new CircleTouchListener());
 
-        plot = (XYPlot) findViewById(R.id.plot);
+        plot = (XYPlot)findViewById(R.id.plot);
 
         // create a couple arrays of y-values to plot:
         Number[] series1Numbers = {1, 4, 2, 8, 4, 16, 8, 32, 16, 64};
@@ -100,9 +124,7 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
             authInProgress = savedInstanceState.getBoolean("auth_state_pending");
         }
 
-
-        // DataReader...
-
+        final MainActivity self = this;
         mClient = new GoogleApiClient.Builder(this)
                 .addApi(Fitness.HISTORY_API)
                 .addScope(new Scope(Scopes.FITNESS_BODY_READ))
@@ -110,7 +132,7 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
                         new GoogleApiClient.ConnectionCallbacks() {
                             @Override
                             public void onConnected(Bundle bundle) {
-                                DataReader.read(mClient);
+                                DataReader.read(self, mClient);
                             }
                             @Override
                             public void onConnectionSuspended(int i) {
