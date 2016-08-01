@@ -35,10 +35,10 @@ import java.util.concurrent.TimeUnit;
 
 import eu.alfred.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity {
     private XYPlot plot;
     private static boolean authInProgress = false;
-    public static GoogleApiClient mClient = null;
+    private GoogleApiClient mClient = null;
     public static final String TAG = "WeightController";
 
     @Override
@@ -95,48 +95,32 @@ public class MainActivity extends AppCompatActivity {
         // rotate domain labels 45 degrees to make them more compact horizontally:
         plot.getGraphWidget().setDomainLabelOrientation(-45);
 
+        Log.i(TAG, "Connecting");
         if (savedInstanceState != null) {
             authInProgress = savedInstanceState.getBoolean("auth_state_pending");
         }
 
+
+        // DataReader...
+
         mClient = new GoogleApiClient.Builder(this)
                 .addApi(Fitness.HISTORY_API)
-                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .addScope(new Scope(Scopes.FITNESS_BODY_READ))
                 .addConnectionCallbacks(
                         new GoogleApiClient.ConnectionCallbacks() {
                             @Override
                             public void onConnected(Bundle bundle) {
-                                Log.i(TAG, "Connected");
-
-                                DataReadRequest readRequest = queryFitnessData();
-                                DataReadResult dataReadResult = Fitness.HistoryApi.readData(mClient, readRequest).await(1, TimeUnit.MINUTES);
-
-                                if (dataReadResult.getBuckets().size() > 0) {
-                                    Log.i(TAG, "Number of returned buckets of DataSets is: "
-                                            + dataReadResult.getBuckets().size());
-                                    for (Bucket bucket : dataReadResult.getBuckets()) {
-                                        List<DataSet> dataSets = bucket.getDataSets();
-                                        for (DataSet dataSet : dataSets) {
-                                            dumpDataSet(dataSet);
-                                        }
-                                    }
-                                } else if (dataReadResult.getDataSets().size() > 0) {
-                                    Log.i(TAG, "Number of returned DataSets is: "
-                                            + dataReadResult.getDataSets().size());
-                                    for (DataSet dataSet : dataReadResult.getDataSets()) {
-                                        dumpDataSet(dataSet);
-                                    }
-                                }
+                                DataReader.read(mClient);
                             }
-
                             @Override
                             public void onConnectionSuspended(int i) {
+                                Log.i(MainActivity.TAG, "Suspended");
                                 // If your connection to the sensor gets lost at some point,
                                 // you'll be able to determine the reason and react to it here.
                                 if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                                    Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+                                    Log.i(MainActivity.TAG, "Connection lost.  Cause: Network Lost.");
                                 } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                                    Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
+                                    Log.i(MainActivity.TAG, "Connection lost.  Reason: Service Disconnected");
                                 }
                             }
                         }
@@ -144,12 +128,10 @@ public class MainActivity extends AppCompatActivity {
                 .enableAutoManage(this, 0, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(ConnectionResult result) {
-                        Log.i(TAG, "Google Play services connection failed. Cause: " + result.toString());
+                        Log.i(MainActivity.TAG, "Google Play services connection failed. Cause: " + result.toString());
                     }
                 })
                 .build();
-
-
     }
 
     //**@Override
@@ -157,40 +139,18 @@ public class MainActivity extends AppCompatActivity {
         Log.i("weightcontroller", "Perform action " + command);
     }
 
-    public static DataReadRequest queryFitnessData() {
-        Calendar cal = Calendar.getInstance();
-        Date now = new Date();
-        cal.setTime(now);
-        long endTime = cal.getTimeInMillis();
-        cal.add(Calendar.WEEK_OF_YEAR, -1);
-        long startTime = cal.getTimeInMillis();
+    //**@Override
+    public void performEntityRecognizer(String bla, Map<String, String> map) {
 
-        java.text.DateFormat dateFormat = DateFormat.getDateInstance();
-        Log.i(TAG, "Range Start: " + dateFormat.format(startTime));
-        Log.i(TAG, "Range End: " + dateFormat.format(endTime));
-
-        DataReadRequest readRequest = new DataReadRequest.Builder()
-                .aggregate(DataType.TYPE_WEIGHT, DataType.AGGREGATE_WEIGHT_SUMMARY)
-                .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
-                .build();
-
-        return readRequest;
     }
 
-    private static void dumpDataSet(DataSet dataSet) {
-        Log.i(TAG, "Data returned for Data type: " + dataSet.getDataType().getName());
-        DateFormat dateFormat = DateFormat.getTimeInstance();
+    //**@Override
+    public void performWhQuery(String bla, Map<String, String> map) {
 
-        for (DataPoint dp : dataSet.getDataPoints()) {
-            Log.i(TAG, "Data point:");
-            Log.i(TAG, "\tType: " + dp.getDataType().getName());
-            Log.i(TAG, "\tStart: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
-            Log.i(TAG, "\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-            for(Field field : dp.getDataType().getFields()) {
-                Log.i(TAG, "\tField: " + field.getName() +
-                        " Value: " + dp.getValue(field));
-            }
-        }
+    }
+
+    //**@Override
+    public void performValidity(String bla, Map<String, String> map) {
+
     }
 }
