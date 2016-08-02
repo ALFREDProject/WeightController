@@ -86,8 +86,7 @@ public class DataReader implements Runnable {
         Log.i(MainActivity.TAG, "Range End: " + dateFormat.format(endTime));
 
         DataReadRequest readRequest = new DataReadRequest.Builder()
-                .aggregate(DataType.TYPE_WEIGHT, DataType.AGGREGATE_WEIGHT_SUMMARY)
-                .bucketByTime(1, TimeUnit.DAYS)
+                .read(DataType.TYPE_WEIGHT)
                 .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
                 .build();
 
@@ -108,7 +107,7 @@ public class DataReader implements Runnable {
             for(Field field : dp.getDataType().getFields()) {
                 Log.i(MainActivity.TAG, "\tField: " + field.getName() +
                         " Value: " + dp.getValue(field));
-                if (field.getName().equals("min")) {
+                if (field.getName().equals("weight")) {
                     weight.weight = dp.getValue(field).asFloat();
                 }
             }
