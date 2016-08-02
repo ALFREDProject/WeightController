@@ -5,6 +5,7 @@ import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.animation.LinearInterpolator;
 
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
@@ -18,13 +19,6 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.fitness.data.Bucket;
-import com.google.android.gms.fitness.data.DataPoint;
-import com.google.android.gms.fitness.data.DataSet;
-import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.request.DataReadRequest;
-import com.google.android.gms.fitness.result.DataReadResult;
 
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -43,25 +37,24 @@ public class MainActivity extends eu.alfred.ui.AppActivity {
     public static final String TAG = "WeightController";
 
     public void addData(List<Weight> weights) {
-        Number[] seriesNumbers = new Number[weights.size()];
+        Number[] xx = new Number[weights.size()];
+        Number[] yy = new Number[weights.size()];
         int i = 0;
         for (Weight weight : weights) {
-            seriesNumbers[i] = weight.weight;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(weight.time);
+            xx[i] = calendar.get(Calendar.DAY_OF_YEAR);
+            yy[i] = weight.weight;
             ++i;
         }
 
-        XYSeries series = new SimpleXYSeries(Arrays.asList(seriesNumbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Weights");
+        SimpleXYSeries series = new SimpleXYSeries(Arrays.asList(xx), Arrays.asList(yy), "Weights");
 
         LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
         seriesFormat.setPointLabelFormatter(new PointLabelFormatter());
         seriesFormat.configure(getApplicationContext(), R.xml.line_point_formatter_with_labels);
 
-        if (seriesNumbers.length > 2) {
-            seriesFormat.setInterpolationParams(new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-        }
-
         plot.addSeries(series, seriesFormat);
-
         plot.redraw();
     }
 
@@ -74,8 +67,6 @@ public class MainActivity extends eu.alfred.ui.AppActivity {
         circleButton.setOnTouchListener(new CircleTouchListener());
 
         plot = (XYPlot)findViewById(R.id.plot);
-        plot.setTicksPerRangeLabel(3);
-        plot.getGraphWidget().setDomainLabelOrientation(-45);
 
         Log.i(TAG, "Connecting");
         if (savedInstanceState != null) {

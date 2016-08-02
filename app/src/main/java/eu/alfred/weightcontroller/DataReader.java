@@ -1,16 +1,8 @@
 package eu.alfred.weightcontroller;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
 import com.google.android.gms.fitness.data.DataPoint;
@@ -85,12 +77,10 @@ public class DataReader implements Runnable {
         Log.i(MainActivity.TAG, "Range Start: " + dateFormat.format(startTime));
         Log.i(MainActivity.TAG, "Range End: " + dateFormat.format(endTime));
 
-        DataReadRequest readRequest = new DataReadRequest.Builder()
+        return new DataReadRequest.Builder()
                 .read(DataType.TYPE_WEIGHT)
                 .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
                 .build();
-
-        return readRequest;
     }
 
     private static void dumpDataSet(DataSet dataSet, List<Weight> weights) {
@@ -103,10 +93,9 @@ public class DataReader implements Runnable {
             Log.i(MainActivity.TAG, "\tType: " + dp.getDataType().getName());
             Log.i(MainActivity.TAG, "\tStart: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
             Log.i(MainActivity.TAG, "\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-            weight.time = dp.getEndTime(TimeUnit.MILLISECONDS);
+            weight.time = dp.getStartTime(TimeUnit.MILLISECONDS);
             for(Field field : dp.getDataType().getFields()) {
-                Log.i(MainActivity.TAG, "\tField: " + field.getName() +
-                        " Value: " + dp.getValue(field));
+                Log.i(MainActivity.TAG, "\tField: " + field.getName() + " Value: " + dp.getValue(field));
                 if (field.getName().equals("weight")) {
                     weight.weight = dp.getValue(field).asFloat();
                 }
