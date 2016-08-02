@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 import eu.alfred.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity {
+public class MainActivity extends eu.alfred.ui.AppActivity {
     private XYPlot plot;
     private static boolean authInProgress = false;
     private GoogleApiClient mClient = null;
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //**circleButton = (CircleButton)findViewById(R.id.voiceControlBtn);
-        //**circleButton.setOnTouchListener(new CircleTouchListener());
+        circleButton = (CircleButton)findViewById(R.id.voiceControlBtn);
+        circleButton.setOnTouchListener(new CircleTouchListener());
 
         plot = (XYPlot)findViewById(R.id.plot);
         plot.setTicksPerRangeLabel(3);
@@ -114,22 +114,22 @@ public class MainActivity extends AppCompatActivity { //eu.alfred.ui.AppActivity
                 .build();
     }
 
-    //**@Override
+    @Override
     public void performAction(String command, Map<String, String> map) {
         Log.i("weightcontroller", "Perform action " + command);
     }
 
-    //**@Override
+    @Override
     public void performEntityRecognizer(String bla, Map<String, String> map) {
 
     }
 
-    //**@Override
+    @Override
     public void performWhQuery(String bla, Map<String, String> map) {
 
     }
 
-    //**@Override
+    @Override
     public void performValidity(String bla, Map<String, String> map) {
 
     }
