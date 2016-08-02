@@ -1,33 +1,24 @@
 package eu.alfred.weightcontroller;
 
-import android.app.Activity;
-import android.graphics.DashPathEffect;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.animation.LinearInterpolator;
 
-import com.androidplot.util.PixelUtils;
-import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYSeries;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 
-import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
+import eu.alfred.ui.BackToPAButton;
 import eu.alfred.ui.CircleButton;
 
 public class MainActivity extends eu.alfred.ui.AppActivity {
@@ -63,10 +54,14 @@ public class MainActivity extends eu.alfred.ui.AppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        backToPAButton = (BackToPAButton)findViewById(R.id.backControlBtn);
+        backToPAButton.setOnTouchListener(new BackTouchListener());
         circleButton = (CircleButton)findViewById(R.id.voiceControlBtn);
-        circleButton.setOnTouchListener(new CircleTouchListener());
+        circleButton.setOnTouchListener(new MicrophoneTouchListener());
 
         plot = (XYPlot)findViewById(R.id.plot);
+        plot.setTicksPerRangeLabel(2);
+        plot.setTicksPerDomainLabel(3);
 
         Log.i(TAG, "Connecting");
         if (savedInstanceState != null) {
